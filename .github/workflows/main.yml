@@ -23,7 +23,7 @@ jobs:
         env:
           TOKEN: ${{ secrets.SOURCE_REPO_TOKEN }}
         run: |
-          git remote add source https://${TOKEN}@github.com/zwen-yirochi/community-with-vanilla.js.git
+          git remote add source https://${TOKEN}@github.com/zwen-yirochi/community-with-vanilla-js.git
           git fetch source
           git push origin refs/remotes/source/*:refs/heads/* --force
           git push origin --tags --force
