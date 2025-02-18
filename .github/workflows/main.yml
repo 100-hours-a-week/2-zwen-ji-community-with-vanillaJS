@@ -1,0 +1,24 @@
+name: Mirror Repository
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'  # 6시간마다 실행
+  workflow_dispatch:        # 수동 실행 가능
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0    # 전체 히스토리 가져오기
+
+      - name: Mirror repository
+        run: |
+          git remote add source https://${{ secrets.SOURCE_REPO_TOKEN }}@github.com/zwen-yirochi/community-with-vanilla.js.git
+          git fetch source
+          git push origin refs/remotes/source/*:refs/heads/* --force
+          git push origin --tags --force
+
+          
