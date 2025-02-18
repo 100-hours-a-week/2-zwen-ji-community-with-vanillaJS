@@ -1,1 +1,0 @@
-# 2-zwen-ji-community-with-vanillaJS
