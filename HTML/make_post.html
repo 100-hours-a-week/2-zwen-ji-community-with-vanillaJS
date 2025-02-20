@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/CSS/global.css">
+    <link rel="stylesheet" type="text/css" href="/CSS/make_post.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <header>
+        <h1 class="title">아무 말 대잔치</h1>
+        <button type="button" class="navigate-before" onclick="location.href='list.html'">navigate_before</button>
+    </header>
+    <div class="contents">
+        <div class="left-padding"></div>
+        <div class="container">
+            <h1 class="page-title">게시글 작성</h1>
+            <div class="form-group">
+                <!-- form1 -->
+                <div class="input-container">
+                    <h1 class="input-title">제목*</h1>
+                    <div class="input-field">
+                        <input type="text" placeholder="제목을 입력해주세요 (최대 26글자)" autofocus>
+                    </div>
+                </div>
+                <div id="padding1"></div>
+                <!-- form2 -->
+                <div class="input-container">
+                    <h1 class="input-title">내용*</h1>
+                    <div class="input-field">
+                        <textarea placeholder="내용을 입력해주세요."></textarea>
+                    </div>
+                    <p class="helper-text">* helper text</p>
+                </div>
+                <div id="padding2"></div>
+                <!-- form3 -->
+                <div>
+                    <h1 class="input-title">이미지</h1>
+                    <div>
+                        <div class="file_input_field">
+                            <button id="button_chous">파일 선택</button>
+                            <span>파일을 선택해 주세요.</span>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- button -->
+                <div id="padding3"></div>
+                <button id="button-type1">완료</button>
+            </div>
+            <div class="right-padding"></div>
+        </div>
+</body>
+
+</html>

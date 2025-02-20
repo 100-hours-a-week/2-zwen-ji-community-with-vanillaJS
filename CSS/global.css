@@ -35,10 +35,11 @@ body {
 }
 
 /* title  ============================*/
+
 .title {
 	width: 100%;
-	height: 104px;
 	border-bottom: solid 1px #000000;
+	height: 104px;
 	padding-top: 36px;
 	text-align: center;
 	font-family: "S-CoreDream-3Light";
@@ -78,8 +79,19 @@ body {
 	line-height: 17.9px;
 }
 
-.input-field input {
+.input-field {
 	margin-top: 8px;
+}
+.input-field input {
+	padding-left: 10px;
+	width: 355px;
+	height: 33px;
+	border: solid 1px #000000;
+	border-width: 1px;
+	border-radius: 4px;
+}
+
+.input-field textarea {
 	padding-left: 10px;
 	width: 355px;
 	height: 33px;
@@ -132,14 +144,21 @@ body {
 	font-weight: 400;
 	font-size: 14px;
 	line-height: 16.71px;
-	background-color: #ffffff;
 	color: #000000;
 }
 
 .navigate-before {
 	position: absolute;
+	left: max(20px, 50vw - 276px);
 	top: 32px;
-	left: 20px;
 	width: 40px;
 	height: 40px;
+}
+
+.user-profile {
+	position: absolute;
+	left: max(20px, 50vw + 232px);
+	top: 36px;
+	border: none;
+	background-color: #f4f5f7;
 }
