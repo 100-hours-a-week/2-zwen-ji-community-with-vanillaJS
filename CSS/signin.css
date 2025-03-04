@@ -1,0 +1,32 @@
+.page-title {
+	margin-top: 161px;
+}
+
+.form-group {
+	/* todo */
+	margin-top: 27px;
+}
+
+.input-container {
+	/* todo */
+	margin-bottom: 10px;
+}
+
+.svg-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+svg {
+	width: 149px;
+	height: 149px;
+}
+
+ellipse#profile-space {
+	cx: 74.5;
+	cy: 74.5;
+	rx: 74.5;
+	ry: 74.5;
+	fill: #c4c4c4;
+}
