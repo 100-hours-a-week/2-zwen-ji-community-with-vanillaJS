@@ -129,3 +129,7 @@ ellipse {
 	border: none;
 	color: #ffffff;
 }
+
+#button-type3:hover {
+	background-color: #7f6aee;
+}

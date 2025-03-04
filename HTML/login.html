@@ -35,14 +35,15 @@
                     <div>
                         <h2 class="input-title">비밀번호</h2>
                         <div class="input-field">
-                            <input type="text" placeholder="비밀번호를 입력하세요" autofocus>
-                            <p id="help1" class="helper-text">* helper text: </p>
+                            <input id='password-field' type="text" placeholder="비밀번호를 입력하세요" autofocus>
+                            <p id="help1" class="helper-text">* helper text: ${text}</p>
                         </div>
                     </div>
                     <div id="padding2"></div>
                     <!-- buttons -->
                     <div>
-                        <button id="button-type1" onclick="location.href='list.html '">로그인</button>
+                        <button class="button-type1 btn-disabled" id="submit-button"
+                            onclick="location.href='list.html '">로그인</button>
                         <a id="button-type2" href="signin.html">회원가입</a>
                     </div>
                 </div>
