@@ -8,6 +8,9 @@
 	border-top: solid 1px #00000029;
 	border-bottom: solid 1px #00000029;
 }
+.input-field input {
+	border: 0px;
+}
 
 #padding1 {
 	height: 26px;
@@ -49,6 +52,7 @@ h1.input-title {
 }
 
 p.helper-text {
+	height: 24px;
 	margin-left: 24px;
 }
 
@@ -56,14 +60,31 @@ p.helper-text {
 	text-align: left;
 	padding-top: 8px;
 }
-.file_input_field button {
-	display: inline-block;
-	margin-left: 24px;
-	margin-right: 8px;
-}
 
 .file_input_field span {
 	font-weight: 400;
 	font-size: 14px;
 	line-height: 16.71px;
+}
+
+#input_file_upload {
+	display: none;
+	visibility: hidden;
+}
+
+#btn_file_upload {
+	display: inline-block;
+	margin-left: 24px;
+	margin-right: 8px;
+	width: 68px;
+	height: 29px;
+	border-radius: 4px;
+	background: #d9d9d9;
+	border: 1px solid #000000;
+	font-family: Pretendard;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 16.71px;
+	text-align: center;
+	color: #000000;
 }

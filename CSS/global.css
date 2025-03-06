@@ -53,6 +53,18 @@ body {
 	height: 100%-104px;
 }
 
+/* profile dummy ========================= */
+.user-profile svg {
+	width: 36px;
+	height: 36px;
+}
+.user-profile ellipse {
+	cx: 18;
+	cy: 18;
+	rx: 18;
+	ry: 18;
+	fill: #d9d9d9;
+}
 .profile-dropdown {
 	display: none;
 }
@@ -72,13 +84,11 @@ body {
 	text-align: center;
 	color: #000000;
 }
-
 .menu-item {
 	display: block;
 	padding: 10px 24px;
 	text-decoration: none;
 }
-
 .menu-item:hover {
 	background-color: #e9e9e9;
 }
