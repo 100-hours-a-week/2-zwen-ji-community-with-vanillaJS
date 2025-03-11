@@ -10,12 +10,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const helperText1 = document.getElementById("helper-text1");
     const helperText2 = document.getElementById("helper-text2");
     const helperText3 = document.getElementById("helper-text3");
+    const helperText4 = document.getElementById("helper-text4");
+    const helperText5 = document.getElementById("helper-text5");
+
+    const email_field = document.getElementById("email_field");
+    const password_field1 = document.getElementById("password_field1");
+    const password_field2 = document.getElementById("password_field2");
+    const nickname_field = document.getElementById("nickname_field");
+
     fileInput.style.display = 'none';
 
     const formState = {
         profileValid: false,
         emailValid: false,
         passwordValid: false,
+        confirmValid: false,
+        nicknameValid: false,
 
 
         updateHelperText() {
@@ -29,6 +39,15 @@ document.addEventListener('DOMContentLoaded', () => {
         updateValidation(isValid) {
             this.profileValid = isValid;
             this.updateHelperText();
+            this.updateSubmitButton();
+        },
+
+        isFormValid() {
+            return this.profileValid &&
+                this.emailValid.isValid &&
+                this.passwordValid.isValid &&
+                this.confirmValid.isValid &&
+                this.nicknameValid.isValid;
         },
         updateSubmitButton() {
             if (submitButton) {
@@ -47,7 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     formState.updateHelperText();
     helperText2.textContent = "*이메일을 입력하세요.";
-    helperText3.textContent = "*비밀번호를 입력해주세요."
+    helperText3.textContent = "*비밀번호를 입력해주세요.";
+    helperText4.textContent = "*비밀번호를 한번 더 입력해주세요.";
+    helperText5.textContent = "*닉네임을 입력해주세요.";
 
     // 프로필 사진 =============================
     profileImageField.addEventListener('click', () => {
@@ -92,17 +113,33 @@ document.addEventListener('DOMContentLoaded', () => {
         formState.updateSubmitButton();
     });
     password_field1.addEventListener("input", () => {
-        formState.passwordValid = isValidPassword(password_field1.value)
+        formState.passwordValid = isValidPassword(password_field1.value);
         helperText3.textContent = formState.passwordValid.message;
         formState.updateSubmitButton();
     });
 
     password_field2.addEventListener("input", () => {
-        formState.passwordValidation2 = isValidPassword2(password_field1.value, password_field2.value);
-
+        formState.confirmValid = isValidPassword2(password_field1.value, password_field2.value);
+        helperText4.textContent = formState.confirmValid.message;
         formState.updateSubmitButton();
     });
+
+    nickname_field.addEventListener("input", () => {
+        formState.nicknameValid = isValidNickname(nickname_field.value);
+        helperText5.textContent = formState.nicknameValid.message;
+        formState.updateSubmitButton();
+    });
+
+
+    submitButton.addEventListener("click", () => {
+        console.log("회원가입 API 호출");
+        console.log("회원가입 시나리오 완료.");
+        window.location.href = 'login.html';
+
+    });
 });
+
+
 
 
 const isValidEmail = (email) => {
@@ -159,3 +196,31 @@ const isValidPassword2 = (password, confirm) => {
     }
     else { return { isValid: true, message: "" }; }
 }
+
+const NICKNAME_STATES = {
+    VALID: { isValid: true, message: "" },
+    NO_VALUE: { isValid: false, message: "*닉네임을 입력해주세요." },
+    HAS_SPACES: { isValid: false, message: "*띄어쓰기 없이 작성해주세요" },
+    TOO_SHORT: { isValid: false, message: "*닉네임은 2자 이상 작성해주세요." },
+    TOO_LONG: { isValid: false, message: "*닉네임은 최대 10자까지 작성 가능합니다." }
+}
+
+const isValidNickname = (nickname) => {
+    if (!nickname || nickname.trim() === '') {
+        return NICKNAME_STATES.NO_VALUE;
+    }
+
+    if (nickname.includes(' ')) {
+        return NICKNAME_STATES.HAS_SPACES;
+    }
+
+    if (nickname.length < 2) {
+        return NICKNAME_STATES.TOO_SHORT;
+    }
+
+    if (nickname.length > 10) {
+        return NICKNAME_STATES.TOO_LONG;
+    }
+
+    return NICKNAME_STATES.VALID;
+};

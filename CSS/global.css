@@ -151,7 +151,7 @@ body {
 .helper-text {
 	text-align: left;
 	width: 355px;
-	height: 12px;
+	height: min(12px);
 	padding-top: 4px;
 	margin: 0 auto;
 	font-family: Inter;
