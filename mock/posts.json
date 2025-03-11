@@ -1,0 +1,112 @@
+[
+    {
+        "id": "1",
+        "title": "첫 번째 게시글",
+        "body": "안녕하세요! 이 게시판에 첫 번째 글을 작성합니다. 앞으로 많은 소통 부탁드립니다.",
+        "nickname": "작성자1",
+        "numLiked": 15,
+        "numViewed": 120,
+        "numComments": 5,
+        "createdAt": "2023-03-01T10:15:00.000Z",
+        "updatedAt": "2023-03-01T10:15:00.000Z"
+    },
+    {
+        "id": "2",
+        "title": "두 번째 게시글",
+        "body": "샘플 내용입니다. 이 게시판이 매우 유용하네요.",
+        "nickname": "작성자2",
+        "numLiked": 10,
+        "numViewed": 78,
+        "numComments": 2,
+        "createdAt": "2023-03-02T14:30:00.000Z",
+        "updatedAt": "2023-03-02T14:30:00.000Z"
+    },
+    {
+        "id": "3",
+        "title": "오늘의 날씨 정보",
+        "body": "오늘은 맑고 화창한 날씨입니다. 외출하기 좋은 날이니 산책을 추천드립니다.",
+        "nickname": "날씨맨",
+        "numLiked": 23,
+        "numViewed": 210,
+        "numComments": 8,
+        "createdAt": "2023-03-05T09:45:00.000Z",
+        "updatedAt": "2023-03-05T11:20:00.000Z"
+    },
+    {
+        "id": "4",
+        "title": "맛집 추천합니다",
+        "body": "강남역 근처에 새로 오픈한 이탈리안 레스토랑을 다녀왔습니다. 파스타가 정말 맛있었어요!",
+        "nickname": "맛집헌터",
+        "numLiked": 47,
+        "numViewed": 315,
+        "numComments": 12,
+        "createdAt": "2023-03-10T18:22:00.000Z",
+        "updatedAt": "2023-03-10T19:05:00.000Z"
+    },
+    {
+        "id": "5",
+        "title": "프로그래밍 질문있습니다",
+        "body": "자바스크립트에서 비동기 처리 방법에 대해 질문이 있습니다. Promise와 async/await의 차이점은 무엇인가요?",
+        "nickname": "코딩초보",
+        "numLiked": 8,
+        "numViewed": 156,
+        "numComments": 6,
+        "createdAt": "2023-03-15T11:11:00.000Z",
+        "updatedAt": "2023-03-15T13:40:00.000Z"
+    },
+    {
+        "id": "6",
+        "title": "주말 여행 계획",
+        "body": "이번 주말에 제주도 여행을 계획 중입니다. 추천 장소나 맛집이 있으면 알려주세요!",
+        "nickname": "여행가이드",
+        "numLiked": 32,
+        "numViewed": 245,
+        "numComments": 15,
+        "createdAt": "2023-03-18T15:30:00.000Z",
+        "updatedAt": "2023-03-18T17:42:00.000Z"
+    },
+    {
+        "id": "7",
+        "title": "신간 도서 리뷰",
+        "body": "최근에 읽은 '미래의 기술'이라는 책을 추천합니다. AI와 미래 사회에 대한 통찰력 있는 분석이 담겨있어요.",
+        "nickname": "북웜",
+        "numLiked": 19,
+        "numViewed": 178,
+        "numComments": 7,
+        "createdAt": "2023-03-22T13:15:00.000Z",
+        "updatedAt": "2023-03-22T14:20:00.000Z"
+    },
+    {
+        "id": "8",
+        "title": "운동 루틴 공유",
+        "body": "제가 매일 하는 10분 홈트레이닝 루틴을 공유합니다. 간단하지만 효과적이에요!",
+        "nickname": "헬스매니아",
+        "numLiked": 56,
+        "numViewed": 342,
+        "numComments": 23,
+        "createdAt": "2023-03-25T07:55:00.000Z",
+        "updatedAt": "2023-03-25T08:30:00.000Z"
+    },
+    {
+        "id": "9",
+        "title": "영화 추천해주세요",
+        "body": "주말에 볼만한 영화를 추천해주세요. 액션이나 SF 장르를 좋아합니다.",
+        "nickname": "영화광",
+        "numLiked": 12,
+        "numViewed": 134,
+        "numComments": 18,
+        "createdAt": "2023-03-28T19:45:00.000Z",
+        "updatedAt": "2023-03-28T20:10:00.000Z"
+    },
+    {
+        "id": "10",
+        "title": "취업 준비 팁",
+        "body": "IT 업계 취업을 준비하는 분들을 위한 몇 가지 팁을 공유합니다. 포트폴리오 준비와 면접 요령에 대한 내용입니다.",
+        "nickname": "취준생멘토",
+        "numLiked": 89,
+        "numViewed": 510,
+        "numComments": 34,
+        "createdAt": "2023-03-30T11:25:00.000Z",
+        "updatedAt": "2023-03-30T15:15:00.000Z"
+    }
+]

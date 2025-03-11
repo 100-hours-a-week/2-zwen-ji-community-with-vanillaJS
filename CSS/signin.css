@@ -18,15 +18,28 @@
 	align-items: center;
 	width: 100%;
 }
-svg {
+.svg-container svg {
 	width: 149px;
 	height: 149px;
 }
 
-ellipse#profile-space {
+.svg-container ellipse {
 	cx: 74.5;
 	cy: 74.5;
 	rx: 74.5;
 	ry: 74.5;
 	fill: #c4c4c4;
+}
+
+.svg-container input {
+	display: none;
+}
+
+#profile-space {
+	x: 0;
+	y: 0;
+	width: 150px;
+	height: 150px;
+	clip-path: circle(75px at 75px 75px);
+	border: solid 1px #000000;
 }

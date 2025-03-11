@@ -7,9 +7,7 @@
     <link rel="stylesheet" type="text/css" href="../CSS/global.css">
     <link rel="stylesheet" type="text/css" href="../CSS/post.css">
     <script src="../JS/profile_dropdown.js"></script>
-    <script src="../JS/post_components/post_delete_modal.js"></script>
-    <script src="../JS/post_components/post_liked.js"></script>
-    <script src="../JS/mock-api.js"></script>
+    <script src="../mock/mock-api.js"></script> <!--Mock -->
     <title>Post</title>
 </head>
 
@@ -58,14 +56,14 @@
                 </div>
                 <!--수정, 삭제 버튼-->
                 <div class="button-group">
-                    <button id="btn_post_edit" class="button-type4" onclick="location.href='post_edit.html'">수정</button>
+                    <button id="btn_post_edit" class="button-type4">수정</button>
                     <button id="btn_post_delete" class="button-type4">삭제</button>
                 </div>
 
             </div>
             <div class="post-body">
-                <div class="dummy-img">
-                </div>
+                <!-- <div class="dummy-img">
+                </div> -->
                 <article id="post-body">
                 </article>
                 <div class="post-details">
@@ -86,9 +84,9 @@
             </div>
             <div class="post-footer">
                 <div class="comment-input">
-                    <textarea placeholder="댓글을 남겨주세요!"></textarea>
+                    <textarea id="comment-input" placeholder="댓글을 남겨주세요!"></textarea>
                     <hr>
-                    <button id="button-type3">댓글 등록</button>
+                    <button id="btn_comment_upload" class="button-type3">댓글 등록</button>
                 </div>
 
                 <div id='comments-list' class="comments-container">
@@ -107,7 +105,7 @@
                 </div>
             </div>
         </div>
-        <script type="module" src="../JS/post_components/post_main.js"></script>
+        <script type="module" src="../JS/post_components/main.js"></script>
 </body>
 
 </html>

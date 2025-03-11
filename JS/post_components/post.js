@@ -1,6 +1,5 @@
-//import { formatDate } from '../utils/date-utils.js';
-import { renderComments } from "./comment.js";
-// DOM 요소 참조
+import { formatDateTime } from '../utils/date-utils.js';
+import { formatNumber } from '../utils/number_format.js';
 const postTitle = document.getElementById('post-title');
 const postBody = document.getElementById('post-body');
 const postAuthor = document.getElementById('post-author');
@@ -8,8 +7,9 @@ const postDate = document.getElementById('post-date');
 const postImage = document.getElementById('post-image');
 const likeCount = document.getElementById('like-info');
 const viewCount = document.getElementById('view-count');
-const commentCount = document.getElementById('comment-count');
 
+const likedInfo = document.getElementById('liked-info');
+const likedBox = document.getElementById('liked-box');
 
 export async function fetchPost(postId) {
     const response = await fetch(`/api/posts/${postId}`);
@@ -18,6 +18,7 @@ export async function fetchPost(postId) {
     }
     return await response.json();
 }
+
 
 export async function loadPostData(postId) {
     try {
@@ -38,7 +39,7 @@ export async function loadPostData(postId) {
 
 // 게시글 데이터 렌더링
 function renderPostData(data) {
-    const { title, body, nickname, image, numLiked, numViewed, numComments, createdAt, comments } = data;
+    const { title, body, nickname, image, numLiked, numViewed, numComments, createdAt } = data;
 
     // 게시글 정보 업데이트
     if (postTitle) postTitle.textContent = title;
@@ -46,7 +47,7 @@ function renderPostData(data) {
     if (postAuthor) postAuthor.textContent = nickname;
     if (postDate) {
         const date = new Date(createdAt);
-        postDate.textContent = date.toDateString();
+        postDate.textContent = formatDateTime(date);
     }
 
     if (postImage) {
@@ -58,15 +59,42 @@ function renderPostData(data) {
         }
     }
 
-    if (likeCount) likeCount.textContent = numLiked;
-    if (viewCount) viewCount.textContent = numViewed;
-    if (commentCount) commentCount.textContent = numComments;
+    if (likeCount) likeCount.textContent = formatNumber(numLiked);
+    if (viewCount) viewCount.textContent = formatNumber(numViewed);
 
-    if (comments) {
-        renderComments(comments);
+    const liked = {
+        isLiked: false,
+        num: 0,
+        getCurrentNum() {
+            this.num = numLiked;
+        },
+        updateCurrentState() {
+            if (this.isLiked) {
+                likedBox.classList.remove('active');
+                liked.num -= 1;
+                this.isLiked = false;
+                console.log("좋아요 취소 API 호출")
+            } else {
+                likedBox.classList.add('active');
+                liked.num += 1;
+                this.isLiked = true;
+                console.log("좋아요 추가 API 호출")
+            }
+            likedInfo.textContent = formatNumber(this.num);
+        }
+    }
+
+    liked.getCurrentNum();
+    likedBox.classList.remove('active');
+    likedInfo.textContent = liked.num;
+
+    if (likedBox) {
+        likedBox.addEventListener('click', () => {
+            liked.updateCurrentState();
+        })
     }
 }
-// 게시글 삭제 처리
+
 // export async function handlePostDelete(postId) {
 //     if (!confirm('정말 이 게시글을 삭제하시겠습니까?')) {
 //         return;
@@ -92,7 +120,9 @@ function renderPostData(data) {
 
 // 게시글 모듈 초기화
 export function initPostModule(postId) {
-
+    document.getElementById('btn_post_edit').addEventListener('click', () => {
+        window.location.href = `./post_edit.html?id=${postId}`;
+    });
     // 게시글 데이터 로드
     return loadPostData(postId);
 }

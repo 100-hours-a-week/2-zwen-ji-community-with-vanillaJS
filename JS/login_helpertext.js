@@ -60,11 +60,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const isValidEmail = (email) => {
     let len = email.length;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
     if (len == 0) {
         return { isValid: false, message: "*이메일을 입력하세요." }
     }
     if (email.length < 5) {
         return { isValid: false, message: "*이메일이 너무 짧습니다." };
+    }
+    if (!emailPattern.test(email)) {
+        return { isValid: false, message: "*올바른 이메일 주소 형식을 입력해주세요." }
     }
     else { return { isValid: true, message: "" }; }
 }
@@ -75,7 +79,11 @@ const isValidEmail = (email) => {
 const PASSWORD_STATES = {
     VALID: { isValid: true, message: "" },
     NO_VALUE: { isValid: false, message: "*비밀번호를 입력해주세요." },
-    INVALID_PASSWORD: { isValid: false, message: "*유효하지 않은 비밀번호!!!!!" }
+    INVALID_PASSWORD: {
+        isValid: false,
+        message: "비밀번호는 8자 이상, 20자 이하이며, 대문자, 소문자, 숫자, 특수문자를 각각 1개 이상 포함해야 합니다."
+    }
+
 }
 
 
@@ -87,5 +95,10 @@ const isValidPassword = (password) => {
     if (len < 8 || len > 20) {
         return PASSWORD_STATES.INVALID_PASSWORD;
     }
+    if (!/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,20}$/.test(password)) {
+
+        return PASSWORD_STATES.INVALID_PASSWORD;
+    }
     return PASSWORD_STATES.VALID;
 }
+

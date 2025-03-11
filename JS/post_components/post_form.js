@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+export function initEditForm() {
     const helpertext1 = document.getElementById('helper-text');
     const post_title = document.getElementById('post-title');
     const post_body = document.getElementById('post-body');
@@ -36,7 +36,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
+    if (post_title.value.length > 0) {
+        formState.titleValidation = true;
+    }
+    else {
+        formState.titleValidation = false;
+    }
+
+    if (post_body.value.length > 0) {
+        formState.bodyValidation = true;
+    }
+    else {
+        formState.bodyValidation = false;
+    }
     formState.updateHelperText();
+
 
     post_title.addEventListener("input", () => {
         const titleValue = post_title.value;
@@ -65,4 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
     submitButton.addEventListener("click", () => {
         // API 호출
     })
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initEditForm();
 });
