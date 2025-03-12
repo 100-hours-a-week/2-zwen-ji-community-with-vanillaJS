@@ -15,6 +15,13 @@
 <body>
     <header>
         <h1 class="title">아무 말 대잔치</h1>
+        <!--뒤로가기 버튼-->
+        <button type="button" class="navigate-before" onclick="location.href='list.html'"><svg
+                xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+            </svg>
+        </button>
         <!-- 프로필 이미지 -->
         <div class="user-profile" id="profileImage">
             <svg>
@@ -39,9 +46,9 @@
                     <div>
                         <h1 class="input-title">프로필 사진</h1>
                         <div class="svg-container">
-                            <svg>
+                            <img id="profile_image" class="profile-image">
+                            <svg id="default_profile_container">
                                 <ellipse id="profile-space">
-                                    <image x="25" y="25" width="100" height="100" />
                                 </ellipse>
                             </svg>
                         </div>

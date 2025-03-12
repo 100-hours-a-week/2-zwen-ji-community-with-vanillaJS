@@ -11,6 +11,10 @@
 	vertical-align: middle;
 }
 
+.svg-container img {
+	width: 36px;
+	height: 36px;
+}
 svg {
 	width: 36px;
 	height: 36px;
@@ -46,7 +50,7 @@ ellipse {
 	position: relative;
 	display: inline-block;
 
-	width: 120px;
+	width: 200px;
 	vertical-align: middle;
 }
 .user-nickname {
@@ -58,6 +62,7 @@ ellipse {
 	font-weight: 700;
 	font-size: 15px;
 	line-height: 19.5px;
+	width: 150px;
 }
 
 .datetime {
@@ -197,16 +202,25 @@ hr {
 }
 .comment {
 	position: relative;
-	height: 65px;
+	height: 80px;
 	margin-bottom: 24px;
 }
 
 .comment-content {
 	position: absolute;
 	top: 52px;
-	left: 64px;
+	left: 40px;
 	font-family: Pretendard;
 	font-weight: 400;
 	font-size: 15px;
 	line-height: 21.15px;
+}
+
+.comments-container .datetime {
+	display: inline-block;
+	position: relative;
+	vertical-align: middle;
+	background: #e0e0e0;
+	padding: 2px 8px;
+	border-radius: 12px;
 }

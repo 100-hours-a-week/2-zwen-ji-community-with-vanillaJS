@@ -1,5 +1,6 @@
 import { modalManager } from '../post_components/modal.js';
 import { showToast } from '../utils/toast.js';
+import { getCurrentUser, getCurrentUserId } from '../utils/user.js';
 
 async function fetchUserProfile() {
     try {
@@ -23,8 +24,8 @@ async function fetchUserProfile() {
 }
 
 function renderUserProfile(user) {
+    //setupMockUser();
     if (!user) {
-        // 에러 메시지를 표시할 요소가 있는지 확인
         const errorElement = document.getElementById('profile-error');
         if (errorElement) {
             errorElement.textContent = '사용자 정보를 불러올 수 없습니다.';
@@ -32,41 +33,69 @@ function renderUserProfile(user) {
         return;
     }
 
-    // 닉네임 설정
     const nicknameInput = document.getElementById('nickname');
     if (nicknameInput) {
-        nicknameInput.value = user.nickname || '';
+        nicknameInput.value = user.userNickname || '';
     }
 
-    // 이메일 설정
     const emailElement = document.getElementById('email');
     if (emailElement) {
-        emailElement.textContent = user.email || '';
+        emailElement.textContent = user.userEmail || '';
     }
 
-    // 프로필 이미지 설정
-    const profileImg = document.getElementById('profile-image');
-    if (profileImg && user.profileImage) {
-        profileImg.src = user.profileImage;
-    }
+    const profileImg = document.getElementById('profile_image');
+    const defaultProfileContainer = document.getElementById('default_profile_container');
 
-    // 추가 정보 설정 (있는 경우)
-    const bioElement = document.getElementById('bio');
-    if (bioElement && user.bio) {
-        bioElement.value = user.bio;
+    if (profileImg) {
+        if (user.userProfileImage) {
+            profileImg.src = user.userProfileImage;
+            profileImg.style.display = 'block';
+
+            if (defaultProfileContainer) {
+                defaultProfileContainer.style.display = 'none';
+            }
+        } else {
+            profileImg.style.display = 'none';
+
+            if (defaultProfileContainer) {
+                defaultProfileContainer.style.display = 'block';
+            } else {
+                profileImg.src = '/assets/default_profile.svg';
+                profileImg.style.display = 'block';
+            }
+        }
     }
 }
 
+
+
 async function initEditProfilePage() {
-    try {
-        const userData = await fetchUserProfile();
-        renderUserProfile(userData);
-    } catch (error) {
-        console.error('초기화 오류:', error);
+    const cachedUserData = getCurrentUser();
+    if (cachedUserData && Object.keys(cachedUserData).length > 0) {
+        console.log("로컬 스토리지에서 사용자 정보를 불러옴.");
+        renderUserProfile(cachedUserData);
     }
+
+    // try {
+    //     const userData = await fetchUserProfile();
+
+    //     if (JSON.stringify(userData) !== JSON.stringify(cachedUserData)) {
+    //         renderUserProfile(userData);
+
+    //         localStorage.setItem('userInfo', JSON.stringify(userData));
+    //     }
+    // } catch (error) {
+    //     console.error('프로필 데이터 가져오기 오류:', error);
+    //     const errorNotice = document.getElementById('sync-error');
+    //     if (errorNotice) {
+    //         errorNotice.textContent = '최신 정보를 불러오지 못했습니다.';
+    //         errorNotice.style.display = 'block';
+    //     }
+    // }
+
     setupFormSubmission();
     modalManager.setup();
-    // 회원 탈퇴 버튼 설정
+
     try {
         setupDropButton();
     } catch (error) {
@@ -78,8 +107,7 @@ function setupDropButton() {
     const dropBtn = document.getElementById("drop-btn");
     if (dropBtn) {
         dropBtn.addEventListener('click', () => {
-            // userId 값을 가져오는 로직이 필요합니다
-            const userId = getCurrentUserId(); // 이 함수는 별도로 구현해야 합니다
+            const userId = getCurrentUserId();
             modalManager.openDropModal(userId);
         });
     } else {
@@ -87,12 +115,9 @@ function setupDropButton() {
     }
 }
 
-function getCurrentUserId() {
-    // 여기에 현재 사용자 ID를 가져오는 로직 구현
-    // 예: 로컬 스토리지, 세션 스토리지, 쿠키 등에서 가져올 수 있음
-    return localStorage.getItem('userId') || 'defaultUserId';
-}
 
+
+// Form 유효성 검사 ===============================
 function checkFormValid(nickname) {
     const helperText = document.querySelector('.helper-text');
     if (!nickname || nickname.trim() === '') {
@@ -168,5 +193,5 @@ function setupFormSubmission() {
 }
 
 
-
+// Entry Point ================================
 document.addEventListener('DOMContentLoaded', initEditProfilePage);

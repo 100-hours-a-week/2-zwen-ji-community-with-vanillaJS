@@ -52,6 +52,13 @@ ellipse {
 	fill: #c4c4c4;
 }
 
+.profile-image {
+	width: 149px;
+	height: 149px;
+	object-fit: cover;
+	border-radius: 50%;
+}
+
 .email-info {
 	text-align: left;
 	font-family: Pretendard;

@@ -1,10 +1,10 @@
 import { formatDateTime } from "../utils/date-utils.js";
-import { formatNumber } from "../utils/number_format.js";
+import { getCurrentUserId } from "../utils/user.js";
 import { setupCommentDeleteButtons } from "./modal.js";
 const commentsList = document.getElementById('comments-list');
 
 export async function fetchComment(postId) {
-    const response = await fetch(`/api/posts/${postId}/comments`);
+    const response = await fetch(`/api/post/${postId}/comment`);
     if (!response.ok) {
         throw new Error(`HTTP 오류: ${response.status}`);
     }
@@ -30,11 +30,9 @@ export async function loadCommentData(postId) {
 
 export function renderComments(comments, postId) {
     const commentCount = document.getElementById('comment-count');
-    let temp = 0;
     if (!commentsList) return;
 
     commentsList.innerHTML = '';
-
     comments.forEach(comment => {
         const commentElement = document.createElement('div');
         commentElement.className = 'comment';
@@ -43,30 +41,26 @@ export function renderComments(comments, postId) {
         commentElement.innerHTML = `
         <div class="writer-info">
             <div class="svg-container">
-                <svg>
-                    <ellipse></ellipse>
-                </svg>
+                ${comment.authorProfileImage ? '<img src="${comment.authorProfileImage}">' : '<svg><ellipse></ellipse></svg>'}
             </div>
-            <div class="user-nickname">${comment.nickname}</div>
+            <div class="user-nickname">${comment.authorNickname}</div>
         </div>
         <div class="datetime">${formatDateTime(new Date(comment.createdAt))}</div>
         <div class="comment-content">${comment.body}</div>
-        ${true ? `
+        ${comment.authorUserId == getCurrentUserId() ? `
         <div class="button-group">
             <button class="button-type4 btn-edit-comment">수정</button>
             <button class="button-type4 btn-delete-comment">삭제</button>
         </div>` : ''}
       `;
-        temp += 1;
         commentsList.appendChild(commentElement);
     });
     setupCommentDeleteButtons(postId);
-    commentCount.textContent = formatNumber(temp);
-
 }
 
+// 댓글 POST ==================================
 export async function postComment(postId, commentData) {
-    const response = await fetch(`/api/posts/${postId}/comments`, {
+    const response = await fetch(`/api/post/${postId}/comment`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -101,6 +95,8 @@ export async function deleteComment(postId, commentId) {
     }
 }
 
+
+// Entry Point ========================================
 export function initCommentModule(postId) {
     // 업로드 버튼 이벤트 등록
     const commentAdd = document.getElementById('btn_comment_upload');
@@ -111,13 +107,11 @@ export function initCommentModule(postId) {
             try {
                 const commentText = commentInput ? commentInput.value.trim() : '';
                 if (!commentText) {
-                    alert('댓글 내용을 입력해주세요.');
                     return;
                 }
 
                 const commentData = {
-                    body: commentText,
-                    nickname: '현재사용자'
+                    body: commentText
                 };
 
                 const result = await postComment(postId, commentData);
@@ -135,8 +129,5 @@ export function initCommentModule(postId) {
             }
         });
     }
-
-    // 초기 댓글 로드
-    loadCommentData(postId);
     return;
 }

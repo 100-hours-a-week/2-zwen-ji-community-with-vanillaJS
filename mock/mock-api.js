@@ -232,7 +232,7 @@ window.fetch = function (url, options = {}) {
     }
 
     //3. 게시물 상세조회 시 댓글 로드 API
-    const commentsMatch = url.match(/\/api\/posts\/(\d+)\/comments$/);
+    const commentsMatch = url.match(/\/api\/post\/(\d+)\/comment$/);
     if (commentsMatch && options.method === 'GET') {
         const postId = commentsMatch[1];
 
@@ -267,7 +267,7 @@ window.fetch = function (url, options = {}) {
     }
 
     // 6. 댓글 작성 API
-    const commentCreateMatch = url.match(/\/api\/posts\/(\d+)\/comments$/);
+    const commentCreateMatch = url.match(/\/api\/post\/(\d+)\/comment$/);
     if (commentCreateMatch && options.method === 'POST') {
         const postId = commentCreateMatch[1];
         console.log(`게시글 ${postId}에 댓글 작성 요청 수신됨`);
