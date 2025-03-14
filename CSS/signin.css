@@ -13,14 +13,13 @@
 }
 
 .svg-container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-}
-.svg-container svg {
 	width: 149px;
 	height: 149px;
+	text-align: center;
+}
+
+.one {
+	text-align: center;
 }
 
 .svg-container ellipse {
@@ -35,9 +34,7 @@
 	display: none;
 }
 
-#profile-space {
-	x: 0;
-	y: 0;
+#profile_image {
 	width: 150px;
 	height: 150px;
 	clip-path: circle(75px at 75px 75px);
