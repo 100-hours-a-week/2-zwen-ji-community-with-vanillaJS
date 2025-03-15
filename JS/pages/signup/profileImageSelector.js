@@ -1,4 +1,4 @@
-import { isValidProfileImage } from "./validator.js";
+import { isValidProfileImage } from "../../utils/validator.js";
 
 export function getProfileImage(profileSpace) {
     return profileSpace ? profileSpace.getAttribute('src') : null;

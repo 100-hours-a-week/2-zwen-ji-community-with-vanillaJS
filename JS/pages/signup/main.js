@@ -1,10 +1,8 @@
-import { createFormState } from "./formState.js";
+import { createFormState } from "../../utils/formState.js";
+import { isValidEmail, isValidNickname, isValidPassword, isValidPassword2 } from "../../utils/validator.js";
 import { initProfileImageSelecter } from "./profileImageSelector.js";
-import { isValidEmail, isValidNickname, isValidPassword, isValidPassword2 } from "./validator.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-
-
 
     const email_field = document.getElementById("email_field");
     const password_field = document.getElementById("password_field1");
@@ -13,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const submitButton = document.getElementById('submit-btn');
 
+    const fields = ['profile', 'email', 'password', 'confirm', 'nickname'];
     const helperTextElements = {
         profile: document.getElementById("helper-text1"),
         email: document.getElementById("helper-text2"),
@@ -21,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         nickname: document.getElementById("helper-text5")
     }
 
-    const formState = createFormState(helperTextElements, submitButton);
+    const formState = createFormState(fields, helperTextElements, submitButton);
 
     // Event Listeners for Signup Page ============================
     email_field.addEventListener("input", () => {

@@ -1,10 +1,6 @@
-export function createFormState(helperTextElements, submitButton) {
+export function createFormState(fields, helperTextElements, submitButton) {
     const state = {
-        profileValid: true,
-        emailValid: false,
-        passwordValid: false,
-        confirmValid: false,
-        nicknameValid: false,
+        ...Object.fromEntries(fields.map(field => [`${field}Valid`, false])),
 
         isFormValid() {
             return Object.keys(this)
