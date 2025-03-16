@@ -54,16 +54,17 @@ body {
 }
 
 /* profile dummy ========================= */
-.user-profile svg {
+.user-profile {
+	position: absolute;
+	left: max(20px, 50vw + 232px);
+	top: 36px;
+	border: none;
+	background-color: #f4f5f7;
+}
+
+.user-profile img {
 	width: 36px;
 	height: 36px;
-}
-.user-profile ellipse {
-	cx: 18;
-	cy: 18;
-	rx: 18;
-	ry: 18;
-	fill: #d9d9d9;
 }
 .profile-dropdown {
 	display: none;
@@ -201,14 +202,6 @@ body {
 	top: 32px;
 	width: 40px;
 	height: 40px;
-}
-
-.user-profile {
-	position: absolute;
-	left: max(20px, 50vw + 232px);
-	top: 36px;
-	border: none;
-	background-color: #f4f5f7;
 }
 
 /* modal ========================================== */

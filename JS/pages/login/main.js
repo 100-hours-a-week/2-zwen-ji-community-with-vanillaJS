@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         this.updateHelperText('helpertext1', validationResult.message);
         this.updateSubmitButton();
     };
+    formState.updateSubmitButton();
 
     email_field.addEventListener("input", () => {
         formState.updateFormState('email', isValidEmail(email_field.value));
@@ -30,7 +31,41 @@ document.addEventListener('DOMContentLoaded', () => {
         formState.updateFormState('password', isValidPassword(password_field.value));
     });
 
+
     submitButton.addEventListener("click", async () => {
         console.log("로그인 API 호출");
+        try {
+            if (!formState.isFormValid()) {
+                return;
+            }
+
+            const response = await fetch("http://localhost:8080/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify({
+                    email: email_field.value,
+                    password: password_field.value,
+                })
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText || "로그인에 실패했습니다");
+            }
+
+            const data = await response.json();
+            console.log("로그인 성공:", data);
+
+            localStorage.setItem("userId", data.id);
+            localStorage.setItem("profileImage", data.profileImage || "default-profile.jpg");
+
+            window.location.href = 'list.html';
+        } catch (error) {
+            console.error("로그인 오류:", error.message);
+            //로그인 실패 로직 
+        }
     });
 });
