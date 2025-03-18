@@ -1,25 +1,25 @@
 export class InfiniteScroll {
     constructor(options) {
-        // 기본 옵션 설정
         const defaultOptions = {
             container: null,
             sentinel: '#scroll-sentinel',
             loadingElement: '#loading-spinner',
             threshold: 0.1,
             throttleDelay: 300,
-            fetchUrl: null,
-            itemsPerPage: 5
+            itemsPerPage: 5,
+            startPage: 1,
+            showEndMessage: true,
+            fetchDataCallback: null,
+            renderCallback: null
         };
 
-        // 사용자 옵션과 기본 옵션 병합
         this.options = { ...defaultOptions, ...options };
 
-        // 필수 옵션 검증
         if (!this.options.container) {
             throw new Error('container 옵션은 필수입니다.');
         }
 
-        this.currentPage = 1;
+        this.currentPage = this.options.startPage;
         this.isLoading = false;
         this.hasMoreData = true;
 
@@ -33,13 +33,11 @@ export class InfiniteScroll {
         this.loadingElement = this.options.loadingElement ?
             document.querySelector(this.options.loadingElement) : null;
 
-        // 필수 요소 확인
         if (!this.container || !this.sentinel) {
             console.error('필요한 DOM 요소를 찾을 수 없습니다.');
             return;
         }
 
-        // 인터섹션 옵저버 설정
         this.setupIntersectionObserver();
     }
 
@@ -63,7 +61,7 @@ export class InfiniteScroll {
         this.observer = observer;
     }
 
-    // 기본 loadData 메소드 (오버라이드 가능)
+
     async loadData() {
         if (this.isLoading || !this.hasMoreData) return;
 
@@ -71,41 +69,75 @@ export class InfiniteScroll {
         this.showLoading();
 
         try {
-            // 실제 구현은 이 메소드를 오버라이드하여 사용
-            console.warn('loadData 메소드를 오버라이드해야 합니다.');
+            // 외부 데이터 가져오기 콜백 사용
+            if (typeof this.options.fetchDataCallback === 'function') {
+                const result = await this.options.fetchDataCallback(this.currentPage, this.options.itemsPerPage);
 
-            // 기본 동작: 페이지 증가 (실제 데이터 로드는 오버라이드에서 구현)
-            this.currentPage++;
+                // 데이터 처리
+                if (result && Array.isArray(result.data)) {
+                    const items = result.data;
+
+                    // 더 이상 데이터가 없는 경우
+                    if (!items.length) {
+                        this.hasMoreData = false;
+                        this.showEndMessage();
+                    } else {
+                        // 렌더링 콜백 함수 호출
+                        if (typeof this.options.renderCallback === 'function') {
+                            this.options.renderCallback(this.container, items);
+                        } else {
+                            console.warn('renderCallback이 설정되지 않았습니다.');
+                        }
+
+                        this.currentPage++;
+                    }
+                } else if (result && result.message && result.message.includes('성공') && result.data && result.data.posts) {
+                    // 이전 API 응답 구조 호환성 유지
+                    const posts = result.data.posts;
+
+                    if (!posts.length) {
+                        this.hasMoreData = false;
+                        this.showEndMessage();
+                    } else {
+                        // 렌더링 콜백 함수 호출
+                        if (typeof this.options.renderCallback === 'function') {
+                            this.options.renderCallback(this.container, posts);
+                        } else {
+                            console.warn('renderCallback이 설정되지 않았습니다.');
+                        }
+
+                        this.currentPage++;
+                    }
+                } else {
+                    this.hasMoreData = false;
+                    console.error('API 응답 형식 오류:', result);
+                    this.showErrorMessage('서버 응답 형식이 올바르지 않습니다.');
+                }
+            } else {
+                console.error('fetchDataCallback이 설정되지 않았습니다.');
+                this.showErrorMessage('데이터를 불러오는 함수가 설정되지 않았습니다.');
+            }
         } catch (error) {
-            console.error('데이터 로드 오류:', error);
-            this.showErrorMessage(error);
+            console.error('무한 스크롤 데이터 로드 오류:', error);
+            this.showErrorMessage('데이터를 불러오는 중 오류가 발생했습니다.');
         } finally {
             this.hideLoading();
             this.isLoading = false;
         }
     }
 
-    // 기본 renderPostItems 메소드 (오버라이드 가능)
-    renderPostItems(items) {
-        console.warn('renderPostItems 메소드를 오버라이드해야 합니다.');
-        // 실제 구현은 이 메소드를 오버라이드하여 사용
-    }
-
-    // 로딩 인디케이터 표시
     showLoading() {
         if (this.loadingElement) {
             this.loadingElement.style.display = 'block';
         }
     }
 
-    // 로딩 인디케이터 숨기기
     hideLoading() {
         if (this.loadingElement) {
             this.loadingElement.style.display = 'none';
         }
     }
 
-    // 더 이상 데이터가 없을 때 메시지 표시
     showEndMessage() {
         if (this.options.showEndMessage === false) return;
 
@@ -115,15 +147,13 @@ export class InfiniteScroll {
         this.container.appendChild(endMessage);
     }
 
-    // 오류 메시지 표시
-    showErrorMessage(error) {
+    showErrorMessage(errorText) {
         const errorMessage = document.createElement('div');
         errorMessage.className = 'error-message';
-        errorMessage.textContent = '콘텐츠를 로드하는 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.';
+        errorMessage.textContent = errorText || '콘텐츠를 로드하는 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.';
         this.container.appendChild(errorMessage);
     }
 
-    // 쓰로틀 유틸리티 메소드
     throttle(func, delay) {
         let lastCall = 0;
         return (...args) => {
@@ -136,7 +166,6 @@ export class InfiniteScroll {
         };
     }
 
-    // 리소스 정리
     destroy() {
         if (this.observer && this.sentinel) {
             this.observer.unobserve(this.sentinel);

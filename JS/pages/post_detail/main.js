@@ -1,13 +1,16 @@
+import { manageLoginStatus } from '../../utils/login.js';
 import { initCommentModule } from './comment.js';
-import { initModals } from './modal.js';
+import { initLikedMoudule } from './liked.js';
 import { initPostModule } from './post.js';
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('id') || '1';
 
+    console.log("post ID 획득함");
+    manageLoginStatus();
     initPostModule(postId);
     initCommentModule(postId);
-    initModals();
-    console.log('애플리케이션이 초기화되었습니다.');
+    initLikedMoudule();
 });

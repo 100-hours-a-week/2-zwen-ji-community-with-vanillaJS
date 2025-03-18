@@ -13,7 +13,8 @@ async function loadUserProfile() {
         if (profileElement) {
             profileElement.src = profileImage || null;
         }
-
+        setDropDown();
+        console.log("프로필 드롭다운 초기화 완료");
         // // 마지막 로드 시간 확인
         // const now = Date.now();
         // const lastUpdate = userInfo.timestamp || 0;
@@ -34,4 +35,17 @@ export async function manageLoginStatus() {
         return;
     }
     await loadUserProfile();
+}
+
+function setDropDown() {
+    const profileImage = document.getElementById('curr_user_profile_image');
+    const profileDropdown = document.querySelector('.profile-dropdown');
+
+    profileImage.addEventListener('click', function (e) {
+        e.stopPropagation();
+        profileDropdown.classList.toggle('active');
+    });
+    document.addEventListener('click', function () {
+        profileDropdown.classList.remove('active');
+    });
 }
