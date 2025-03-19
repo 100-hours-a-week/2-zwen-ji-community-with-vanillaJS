@@ -103,3 +103,39 @@ export function isValidProfileImage(file) {
 
     return { isValid: true, message: "" };
 }
+
+
+
+// Post Title ========================================
+const POST_TITLE_STATES = {
+    VALID: { isValid: true, message: "" },
+    NO_VALUE: { isValid: false, message: "*제목, 내용을 모두 입력해주세요." },
+    INVALID_TITLE: { isValid: false, message: "*제목은 26자 이하로 작성해주세요." }
+}
+
+export const isValidPostTitle = (title) => {
+    let len = title.length;
+    if (len == 0) {
+        return POST_TITLE_STATES.NO_VALUE;
+    }
+    if (len > 27) {
+        return POST_TITLE_STATES.INVALID_TITLE
+    }
+    return POST_TITLE_STATES.VALID;
+}
+
+
+
+// Post Content
+const POST_CONTENT_STATES = {
+    VALID: { isValid: true, message: "" },
+    NO_VALUE: { isValid: false, message: "*제목, 내용을 모두 입력해주세요." },
+}
+
+export const isValidPostContent = (content) => {
+    let len = content.length;
+    if (len == 0) {
+        return POST_CONTENT_STATES.NO_VALUE;
+    }
+    return POST_CONTENT_STATES.VALID;
+}

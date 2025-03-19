@@ -6,11 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../CSS/global.css">
     <link rel="stylesheet" type="text/css" href="../CSS/make_post.css">
-    <script src="../JS/profile_dropdown.js"></script>
-    <script src="../JS/file_upload_button.js"></script>
-    <script src="../JS/post_form.js" type="module"></script>
-    <script src="../mock/mock-api.js"></script> <!--Mock -->
-    <title>Document</title>
+    <title>Post Editor</title>
 </head>
 
 <body>
@@ -24,10 +20,8 @@
             </svg>
         </button>
         <!--프로필-->
-        <div class="user-profile" id="profileImage">
-            <svg>
-                <ellipse></ellipse>
-            </svg>
+        <div class="user-profile">
+            <img id="curr_user_profile_image">
         </div>
         <div class="profile-dropdown">
             <div class="dropdown-menu" id="dropdownMenu">
@@ -79,7 +73,7 @@
             </div>
             <div class="right-padding"></div>
         </div>
-        <script type="module" src="../JS/post_components/post_edit.js"></script>
+        <script type="module" src="../JS/pages/post_edit/main.js"></script>
 </body>
 
 </html>

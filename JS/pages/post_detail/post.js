@@ -2,6 +2,8 @@ import { formatDateTime } from '../../utils/date-utils.js';
 import { ModalManager } from '../../utils/modal.js';
 import { formatNumber } from '../../utils/number_format.js';
 import { getCurrentUserId } from '../../utils/user.js';
+import { deleteComment } from './comment.js';
+import { fetchPost } from '../../api/post_api.js';
 
 const postTitle = document.getElementById('post-title');
 const postContent = document.getElementById('post-body');
@@ -13,30 +15,9 @@ const viewsCountField = document.getElementById('view-count');
 const commentsCountField = document.getElementById('comment-count');
 const likedBox = document.getElementById('liked-box');
 
-export async function fetchPost(postId) {
-    const response = await fetch(`http://localhost:8080/post/${postId}`);
-    if (!response.ok) {
-        throw new Error(`HTTP 오류: ${response.status}`);
-    }
-    return await response.json();
-}
 
-export async function loadPostData(postId) {
-    try {
-        const result = await fetchPost(postId);
-        renderPostData(result.data);
-        // if (result.status === 'success') {
-        //     renderPostData(result.data);
-        //     return result.data;
-        // } else {
-        //     console.error('API 오류:', result);
-        //     return null;
-        // }
-    } catch (error) {
-        console.error('게시글 로드 오류:', error);
-        return null;
-    }
-}
+const devTest = true;
+
 
 function renderPostData(data) {
     const { postId, title, content, imageUrl, authorId, authorNickname, authorProfileImageUrl, likesCount, viewsCount, commentsCount, createdAt, meLiked, comments } = data;
@@ -88,38 +69,66 @@ export function renderComments(comments, total) {
         </div>
         <div class="datetime">${formatDateTime(new Date(comment.createdAt))}</div>
         <div class="comment-content">${comment.content}</div>
-        ${comment.authorUserId == getCurrentUserId() ? `
+        ${comment.authorUserId == getCurrentUserId() || devTest ? `
         <div class="button-group">
             <button class="button-type4 btn-edit-comment">수정</button>
             <button class="button-type4 btn-delete-comment">삭제</button>
         </div>` : ''}
       `;
+        if (comment.authorUserId == getCurrentUserId() || devTest) {
+            commentElement.querySelector('.btn-edit-comment').addEventListener('click', () => {
+                //TODO
+                console.log("댓글 수정 처리 로직", comment.id);
+            });
+            new ModalManager({
+                trigger: commentElement.querySelector('.btn-delete-comment'),
+                callback: async () => { deleteComment(comment.id) },
+                mainText: '댓글을 삭제하시겠습니까?',
+                subText: '삭제된 게시글은 복구할 수 없습니다.'
+            })
+        }
         commentsList.appendChild(commentElement);
     });
     //setupCommentDeleteButtons(postId);
 }
 
 // Entry Point ========================================
-export function initPostModule(postId) {
+export async function initPostModule(postId) {
+    try {
+        const result = await fetchPost(postId);
+        renderPostData(result.data);
+        // if (result.status === 'success') {
+        //     renderPostData(result.data);
+        //     return result.data;
+        // } else {
+        //     console.error('API 오류:', result);
+        //     return null;
+        // }
 
-    loadPostData(postId);
+        if (result.data.authorId == getCurrentUserId() || devTest) {
+            document.querySelector(".button-group").setAttribute("style", "display:inline-block");
+            document.getElementById('btn_post_edit').addEventListener('click', () => {
+                window.location.href = `./post_edit.html?id=${postId}`;
+            });
 
-    document.getElementById('btn_post_edit').addEventListener('click', () => {
-        window.location.href = `./post_edit.html?id=${postId}`;
-    });
+            const postDeleteModal = new ModalManager({
+                trigger: document.getElementById('btn_post_delete'),
+                callback: async () => { deletePost(postId) },
+                mainText: '게시글을 삭제하시겠습니까?',
+                subText: '삭제된 게시글은 복구할 수 없습니다.'
+            });
+            console.log("게시물 삭제 이벤트리스너 등록");
+        }
+    } catch (error) {
+        console.error('게시글 페이지 로드 오류:', error);
+        return null;
+    }
 
-    const postDeleteModal = new ModalManager({
-        trigger: document.getElementById('btn_post_delete'),
-        callback: async (context) => { deletePost(context.postId) },
-        mainText: '게시글을 삭제하시겠습니까?',
-        subText: '삭제된 게시글은 복구할 수 없습니다.'
-    });
-    console.log("게시물 삭제 이벤트리스너 등록");
 }
 
 
 async function deletePost(postId) {
-    console.log('게시글 삭제 API 호출');
+    console.log('게시글 삭제 API 호출', postId);
     // try {
     //     // 게시글 삭제 API 호출
     //     const response = await fetch(`/api/posts/${postId}`, {

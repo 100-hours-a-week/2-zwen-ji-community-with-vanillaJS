@@ -80,22 +80,23 @@ export async function postComment(postId, commentData) {
 }
 
 // DELETE comment ===============================
-export async function deleteComment(postId, commentId) {
-    try {
-        const response = await fetch(`/api/posts/${postId}/comments/${commentId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+export async function deleteComment(commentId) {
+    console.log("댓글 삭제 로직", commentId);
+    // try {
+    //     const response = await fetch(`/api/posts/${postId}/comments/${commentId}`, {
+    //         method: 'DELETE',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         }
+    //     });
 
-        if (!response.ok) {
-            throw new Error(`HTTP 오류: ${response.status}`);
-        }
+    //     if (!response.ok) {
+    //         throw new Error(`HTTP 오류: ${response.status}`);
+    //     }
 
-        return await response.json();
-    } catch (error) {
-        console.error('댓글 삭제 오류:', error);
-        throw error;
-    }
+    //     return await response.json();
+    // } catch (error) {
+    //     console.error('댓글 삭제 오류:', error);
+    //     throw error;
+    // }
 }
