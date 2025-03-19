@@ -1,19 +1,9 @@
+import { fetchPostList } from "../../api/post_api.js";
 import { formatDateTime } from "../../utils/date-utils.js";
 import { formatNumber } from "../../utils/number_format.js";
 import { InfiniteScroll } from "./infinite_scroll.js";
 
-export async function fetchPostList(page = 1, limit = 5) {
-    try {
-        const response = await fetch(`http://localhost:8080/posts?page=${page}&limit=${limit}`);
-        if (!response.ok) {
-            throw new Error(`HTTP 오류: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('게시물 목록 가져오기 오류:', error);
-        throw error;
-    }
-}
+
 export function renderPostItems(container, postList) {
     if (!container || !Array.isArray(postList)) return;
 
@@ -26,9 +16,9 @@ export function renderPostItems(container, postList) {
             <div class="info-wrap">
                 <h1>${postInfo.title}</h1>
                 <div class="post-detail">
-                    <div>좋아요 ${formatNumber(postInfo.numLiked)}</div>
-                    <div>댓글 ${formatNumber(postInfo.numComments)}</div>
-                    <div>조회수 ${formatNumber(postInfo.numViewed)}</div>
+                    <div>좋아요 ${formatNumber(postInfo.likesCount)}</div>
+                    <div>댓글 ${formatNumber(postInfo.commentsCount)}</div>
+                    <div>조회수 ${formatNumber(postInfo.viewsCount)}</div>
                     <span class="datetime">${formatDateTime(postInfo.createdAt)}</span>
                 </div>
             </div>

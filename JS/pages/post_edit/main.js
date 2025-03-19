@@ -1,3 +1,4 @@
+import { createPost } from "../../api/post_api.js";
 import { createFormState } from "../../utils/formState.js";
 import { manageLoginStatus } from "../../utils/login.js";
 import { isValidPostContent, isValidPostTitle } from "../../utils/validator.js";
@@ -43,6 +44,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     submitButton.addEventListener('click', async function () {
         const { mode, postId } = getEditorMode();
+        const formData = {
+            title: post_title.value.trim(),
+            content: post_body.value.trim(),
+            imageUrl: "default_image"
+        }
 
         if (mode === 'create') {
             console.log("게시물 생성 API 호출");

@@ -1,9 +1,11 @@
+import { deleteComment } from '../../api/comments_api.js';
+import { deletePost, fetchPost } from '../../api/post_api.js';
 import { formatDateTime } from '../../utils/date-utils.js';
 import { ModalManager } from '../../utils/modal.js';
 import { formatNumber } from '../../utils/number_format.js';
 import { getCurrentUserId } from '../../utils/user.js';
-import { deleteComment } from './comment.js';
-import { fetchPost } from '../../api/post_api.js';
+import { loadCommentData } from './comment.js';
+import { initLikedMoudule } from './liked.js';
 
 const postTitle = document.getElementById('post-title');
 const postContent = document.getElementById('post-body');
@@ -16,12 +18,11 @@ const commentsCountField = document.getElementById('comment-count');
 const likedBox = document.getElementById('liked-box');
 
 
-const devTest = true;
+const devTest = false;
 
 
 function renderPostData(data) {
-    const { postId, title, content, imageUrl, authorId, authorNickname, authorProfileImageUrl, likesCount, viewsCount, commentsCount, createdAt, meLiked, comments } = data;
-
+    const { postId, title, content, imageUrl, authorUserId, authorNickname, authorProfileImageUrl, likesCount, viewsCount, commentsCount, createdAt, likedByCurrentUser, comments } = data;
     if (postTitle) postTitle.textContent = title;
     if (postContent) postContent.textContent = content;
     if (postAuthor) postAuthor.textContent = authorNickname;
@@ -44,27 +45,32 @@ function renderPostData(data) {
     if (commentsCountField) commentsCountField.textContent = formatNumber(commentsCount);
 
 
-    renderComments(comments.comment, comments.totalComments);
+    if (comments && Array.isArray(comments)) {
+        renderComments(postId, comments, comments.length);
+    }
+    else {
+        console.error('댓글 데이터 형식이 예상과 다릅니다:', data.comments);
+    }
+    console.log(likedByCurrentUser);
+    initLikedMoudule(likedByCurrentUser, likesCount, postId);
 }
 
 
 
-export function renderComments(comments, total) {
+export function renderComments(postId, comments, total) {
     const commentsList = document.getElementById('comments-list');
     if (!commentsList) return;
 
     commentsList.innerHTML = '';
-
+    if (!comments) return;
     comments.forEach(comment => {
         const commentElement = document.createElement('div');
         commentElement.className = 'comment';
-        commentElement.dataset.commentId = comment.id;
+        commentElement.dataset.commentId = comment.commentId;
 
         commentElement.innerHTML = `
         <div class="writer-info">
-            <div class="svg-container">
-                ${comment.authorProfileImage ? '<img src="${comment.authorProfileImage}">' : '<svg><ellipse></ellipse></svg>'}
-            </div>
+                <img src=${comment.authorProfileImage}>
             <div class="user-nickname">${comment.authorNickname}</div>
         </div>
         <div class="datetime">${formatDateTime(new Date(comment.createdAt))}</div>
@@ -78,11 +84,18 @@ export function renderComments(comments, total) {
         if (comment.authorUserId == getCurrentUserId() || devTest) {
             commentElement.querySelector('.btn-edit-comment').addEventListener('click', () => {
                 //TODO
-                console.log("댓글 수정 처리 로직", comment.id);
+                console.log("댓글 수정 처리 로직", comment.commentId);
             });
             new ModalManager({
                 trigger: commentElement.querySelector('.btn-delete-comment'),
-                callback: async () => { deleteComment(comment.id) },
+                callback: async () => {
+                    const result = await deleteComment(comment.commentId);
+                    if (result.status === 'success') {
+                        loadCommentData(postId);
+                    } else {
+                        console.error('API 오류:', result);
+                    }
+                },
                 mainText: '댓글을 삭제하시겠습니까?',
                 subText: '삭제된 게시글은 복구할 수 없습니다.'
             })
@@ -91,6 +104,7 @@ export function renderComments(comments, total) {
     });
     //setupCommentDeleteButtons(postId);
 }
+
 
 // Entry Point ========================================
 export async function initPostModule(postId) {
@@ -105,7 +119,7 @@ export async function initPostModule(postId) {
         //     return null;
         // }
 
-        if (result.data.authorId == getCurrentUserId() || devTest) {
+        if (result.data.authorUserId == getCurrentUserId() || devTest) {
             document.querySelector(".button-group").setAttribute("style", "display:inline-block");
             document.getElementById('btn_post_edit').addEventListener('click', () => {
                 window.location.href = `./post_edit.html?id=${postId}`;
@@ -124,22 +138,4 @@ export async function initPostModule(postId) {
         return null;
     }
 
-}
-
-
-async function deletePost(postId) {
-    console.log('게시글 삭제 API 호출', postId);
-    // try {
-    //     // 게시글 삭제 API 호출
-    //     const response = await fetch(`/api/posts/${postId}`, {
-    //         method: 'DELETE'
-    //     });
-    //     if (response.ok) {
-    //         window.location.href = '/posts';
-    //     } else {
-    //         console.log('게시글 삭제에 실패했습니다.');
-    //     }
-    // } catch (error) {
-    //     console.error('게시글 삭제 오류:', error);
-    // }
 }

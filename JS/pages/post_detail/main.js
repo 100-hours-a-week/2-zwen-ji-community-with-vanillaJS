@@ -1,6 +1,5 @@
 import { manageLoginStatus } from '../../utils/login.js';
 import { initCommentModule } from './comment.js';
-import { initLikedMoudule } from './liked.js';
 import { initPostModule } from './post.js';
 
 
@@ -12,5 +11,4 @@ document.addEventListener('DOMContentLoaded', function () {
     manageLoginStatus();
     initPostModule(postId);
     initCommentModule(postId);
-    initLikedMoudule();
 });

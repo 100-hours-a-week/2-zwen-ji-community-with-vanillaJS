@@ -49,7 +49,6 @@ ellipse {
 .writer-info {
 	position: relative;
 	display: inline-block;
-
 	width: 200px;
 	vertical-align: middle;
 }
@@ -223,4 +222,14 @@ hr {
 	background: #e0e0e0;
 	padding: 2px 8px;
 	border-radius: 12px;
+}
+
+.writer-info img {
+	position: relative;
+	width: 36px;
+	height: 36px;
+	display: inline-block;
+	vertical-align: middle;
+	object-fit: cover;
+	border-radius: 50%;
 }

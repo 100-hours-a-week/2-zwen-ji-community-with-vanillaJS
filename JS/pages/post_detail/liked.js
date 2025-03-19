@@ -1,6 +1,7 @@
+import { createLiked, deleteLiked } from "../../api/likes_api.js";
 import { formatNumber } from "../../utils/number_format.js";
 
-export function initLikedMoudule(isLikedByCurrentUser, likesCount) {
+export function initLikedMoudule(isLikedByCurrentUser, likesCount, postId) {
     const likeCountElement = document.getElementById('liked-info');
     const likedBox = document.getElementById('liked-box');
 
@@ -31,14 +32,11 @@ export function initLikedMoudule(isLikedByCurrentUser, likesCount) {
             }
         },
         callLikeAPI() {
-            // TODO
-            console.log("좋아요 추가 API 호출");
-
+            createLiked(postId);
         },
 
         callUnlikeAPI() {
-            // TODO
-            console.log("좋아요 취소 API 호출");
+            deleteLiked(postId);
         }
     }
 

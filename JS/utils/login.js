@@ -1,6 +1,22 @@
 function checkLoginStatus() {
     const userId = localStorage.getItem("userId");
-    return !!userId;
+    const token = localStorage.getItem("token");
+    return !!(userId && token);
+}
+
+function isTokenValid() {
+    const token = localStorage.getItem("token");
+    if (!token) return false;
+
+    try {
+        // 토큰의 페이로드 부분 추출 및 디코딩
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        // exp 필드는 토큰 만료 시간(초 단위)
+        return payload.exp * 1000 > Date.now(); // 밀리초로 변환하여 비교
+    } catch (e) {
+        console.error("토큰 검증 중 오류 발생:", e);
+        return false;
+    }
 }
 
 async function loadUserProfile() {
@@ -28,14 +44,58 @@ async function loadUserProfile() {
     }
 }
 
+export function addAuthHeader(options = {}) {
+    const token = localStorage.getItem("token");
+    if (!token) return options;
+
+    // headers 객체가 없으면 생성
+    if (!options.headers) {
+        options.headers = {};
+    }
+    // Authorization 헤더 추가
+    options.headers.Authorization = `Bearer ${token}`;
+    return options;
+}
+
+export function logout() {
+    localStorage.removeItem("userId");
+    localStorage.removeItem("profileImageUrl");
+    localStorage.removeItem("token");
+
+    // 로그인 페이지로 리다이렉트
+    window.location.href = 'login.html';
+}
+
 export async function manageLoginStatus() {
     const isLoggedIn = checkLoginStatus();
     if (!isLoggedIn) {
-        window.location.href = 'login.html';
+        //window.location.href = 'login.html';
         return;
     }
+
+    // 토큰 유효성 검사
+    if (!isTokenValid()) {
+        console.log("인증 토큰이 만료되었습니다. 다시 로그인해주세요.");
+        logout();
+        return;
+    }
+
     await loadUserProfile();
 }
+
+export function handleLoginSuccess(response) {
+    // 응답에서 필요한 정보 추출
+    const { userId, profileImageUrl, token } = response.data;
+    console.log(userId, profileImageUrl, token);
+    // 로컬 스토리지에 저장
+    localStorage.setItem('userId', userId);
+    localStorage.setItem('profileImageUrl', profileImageUrl || "default-profile.jpg");
+    localStorage.setItem('token', token);
+
+    window.location.href = 'list.html';
+}
+
+
 
 function setDropDown() {
     const profileImage = document.getElementById('curr_user_profile_image');

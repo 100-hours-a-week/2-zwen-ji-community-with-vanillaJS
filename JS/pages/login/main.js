@@ -1,4 +1,5 @@
 import { createFormState } from "../../utils/formState.js";
+import { handleLoginSuccess } from "../../utils/login.js";
 import { isValidEmail, isValidPassword } from "../../utils/validator.js";
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -57,11 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json();
             console.log("로그인 성공:", data);
+            handleLoginSuccess(data);
 
-            localStorage.setItem("userId", data.id);
-            localStorage.setItem("profileImage", data.profileImage || "default-profile.jpg");
-
-            window.location.href = 'list.html';
         } catch (error) {
             console.error("로그인 오류:", error.message);
             //로그인 실패 로직 

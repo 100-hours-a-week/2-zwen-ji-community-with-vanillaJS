@@ -5,8 +5,8 @@ export function getCurrentUser() {
 }
 
 export function getCurrentUserId() {
-    const userInfo = getCurrentUser();
-    return userInfo.userId || null;
+    const userId = localStorage.getItem('userId');
+    return userId || null;
 }
 
 // 사용자 정보 업데이트 함수
