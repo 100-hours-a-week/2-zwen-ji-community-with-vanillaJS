@@ -19,6 +19,7 @@ export function createFormState(fields, helperTextElements, submitButton) {
             if (helperTextElement) {
                 helperTextElement.textContent = message || '';
             }
+
         },
 
         updateSubmitButton() {

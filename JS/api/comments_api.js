@@ -46,6 +46,31 @@ export async function createComment(commentData) {
     }
 }
 
+//PUT Edit Comment ==============================
+export async function updateComment(commentId, commentData) {
+    try {
+        const options = addAuthHeader({
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(commentData)
+        });
+        const response = await fetch(`${baseUrl}/comments/${commentId}`, options);
+
+        if (!response.ok) {
+            throw new Error(`HTTP 오류: ${response.status}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('댓글 수정  오류:', error);
+        throw error;
+    }
+}
+
+
+
 // DELETE comment ===============================
 export async function deleteComment(commentId) {
     try {

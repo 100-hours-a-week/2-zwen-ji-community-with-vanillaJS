@@ -1,10 +1,9 @@
-import { deleteComment } from '../../api/comments_api.js';
 import { deletePost, fetchPost } from '../../api/post_api.js';
 import { formatDateTime } from '../../utils/date-utils.js';
 import { ModalManager } from '../../utils/modal.js';
 import { formatNumber } from '../../utils/number_format.js';
 import { getCurrentUserId } from '../../utils/user.js';
-import { loadCommentData } from './comment.js';
+import { renderComments } from './comment.js';
 import { initLikedMoudule } from './liked.js';
 
 const postTitle = document.getElementById('post-title');
@@ -16,9 +15,6 @@ const likesCountField = document.getElementById('liked-info');
 const viewsCountField = document.getElementById('view-count');
 const commentsCountField = document.getElementById('comment-count');
 const likedBox = document.getElementById('liked-box');
-
-
-const devTest = false;
 
 
 function renderPostData(data) {
@@ -51,59 +47,12 @@ function renderPostData(data) {
     else {
         console.error('댓글 데이터 형식이 예상과 다릅니다:', data.comments);
     }
-    console.log(likedByCurrentUser);
+
     initLikedMoudule(likedByCurrentUser, likesCount, postId);
 }
 
 
 
-export function renderComments(postId, comments, total) {
-    const commentsList = document.getElementById('comments-list');
-    if (!commentsList) return;
-
-    commentsList.innerHTML = '';
-    if (!comments) return;
-    comments.forEach(comment => {
-        const commentElement = document.createElement('div');
-        commentElement.className = 'comment';
-        commentElement.dataset.commentId = comment.commentId;
-
-        commentElement.innerHTML = `
-        <div class="writer-info">
-                <img src=${comment.authorProfileImage}>
-            <div class="user-nickname">${comment.authorNickname}</div>
-        </div>
-        <div class="datetime">${formatDateTime(new Date(comment.createdAt))}</div>
-        <div class="comment-content">${comment.content}</div>
-        ${comment.authorUserId == getCurrentUserId() || devTest ? `
-        <div class="button-group">
-            <button class="button-type4 btn-edit-comment">수정</button>
-            <button class="button-type4 btn-delete-comment">삭제</button>
-        </div>` : ''}
-      `;
-        if (comment.authorUserId == getCurrentUserId() || devTest) {
-            commentElement.querySelector('.btn-edit-comment').addEventListener('click', () => {
-                //TODO
-                console.log("댓글 수정 처리 로직", comment.commentId);
-            });
-            new ModalManager({
-                trigger: commentElement.querySelector('.btn-delete-comment'),
-                callback: async () => {
-                    const result = await deleteComment(comment.commentId);
-                    if (result.status === 'success') {
-                        loadCommentData(postId);
-                    } else {
-                        console.error('API 오류:', result);
-                    }
-                },
-                mainText: '댓글을 삭제하시겠습니까?',
-                subText: '삭제된 게시글은 복구할 수 없습니다.'
-            })
-        }
-        commentsList.appendChild(commentElement);
-    });
-    //setupCommentDeleteButtons(postId);
-}
 
 
 // Entry Point ========================================
@@ -127,7 +76,12 @@ export async function initPostModule(postId) {
 
             const postDeleteModal = new ModalManager({
                 trigger: document.getElementById('btn_post_delete'),
-                callback: async () => { deletePost(postId) },
+                callback: async () => {
+                    const response = await deletePost(postId);
+                    if (response.status == "success") {
+
+                    }
+                },
                 mainText: '게시글을 삭제하시겠습니까?',
                 subText: '삭제된 게시글은 복구할 수 없습니다.'
             });

@@ -34,11 +34,9 @@ export class ModalManager {
         }
     }
 
-    // 모달 열기
     openModal() {
         if (!this.modalOverlay) return;
 
-        // 모달 텍스트 설정
         if (this.modalTitle) {
             this.modalTitle.textContent = this.options.mainText || '';
         }

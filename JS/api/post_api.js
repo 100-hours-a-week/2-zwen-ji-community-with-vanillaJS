@@ -70,8 +70,28 @@ export async function createPost(formData) {
 }
 
 
-// PATCH Post ================================
-
+// PUT Post ================================
+export async function updatePost(postId, formData) {
+    try {
+        const options = addAuthHeader({
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+        const response = await fetch(`${baseUrl}/posts/${postId}`, options);
+        if (!response.ok) {
+            const errorBody = await response.text();
+            console.error('상세 오류:', errorBody);
+            throw new Error(`HTTP 오류: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('게시물 수정 오류:', error);
+        throw error;
+    }
+}
 
 // DELETE Post =================================
 export async function deletePost(postId) {
@@ -85,9 +105,9 @@ export async function deletePost(postId) {
             }
         });
 
-        const response = await fetch(`/posts/${postId}`, options);
+        const response = await fetch(`${baseUrl}/posts/${postId}`, options);
         if (response.ok) {
-            window.location.href = '/posts';
+            window.location.href = './list.html';
         } else {
             console.log('게시글 삭제에 실패했습니다.');
         }

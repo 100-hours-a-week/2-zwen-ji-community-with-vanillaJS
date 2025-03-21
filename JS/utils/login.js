@@ -22,12 +22,12 @@ function isTokenValid() {
 async function loadUserProfile() {
     try {
         const userId = localStorage.getItem("userId");
-        const profileImage = localStorage.getItem("profileImage");
+        const profileImageUrl = localStorage.getItem("profileImageUrl");
 
         // 프로필 이미지 표시
         const profileElement = document.getElementById('curr_user_profile_image');
         if (profileElement) {
-            profileElement.src = profileImage || null;
+            profileElement.src = `http://localhost:8080/${profileImageUrl}` || null;
         }
         setDropDown();
         console.log("프로필 드롭다운 초기화 완료");

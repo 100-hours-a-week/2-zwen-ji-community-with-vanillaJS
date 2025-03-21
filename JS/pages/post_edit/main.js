@@ -1,4 +1,4 @@
-import { createPost } from "../../api/post_api.js";
+import { createPost, updatePost } from "../../api/post_api.js";
 import { createFormState } from "../../utils/formState.js";
 import { manageLoginStatus } from "../../utils/login.js";
 import { isValidPostContent, isValidPostTitle } from "../../utils/validator.js";
@@ -51,10 +51,26 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (mode === 'create') {
-            console.log("게시물 생성 API 호출");
-            await createPost(formData);
-        } else {
-            console.log("게시물 수정 API 호출");
+            try {
+                console.log("게시물 생성 API 호출");
+                const response = await createPost(formData);
+                if (response.status == "success") {
+                    window.location.href = `post.html?id=${response.data}`;
+                }
+            } catch (error) {
+                console.error("게시물 생성 오류:", error.message);
+            }
+        }
+        else {
+            try {
+                console.log("게시물 수정 API 호출");
+                const response = await updatePost(postId, formData);
+                if (response.status == "success") {
+                    window.location.href = `post.html?id=${response.data}`;
+                }
+            } catch (error) {
+                console.error("게시물 수정 오류:", error.message);
+            }
             await updatePost(postId, formData);
         }
     });

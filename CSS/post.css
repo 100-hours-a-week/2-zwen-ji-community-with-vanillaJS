@@ -233,3 +233,11 @@ hr {
 	object-fit: cover;
 	border-radius: 50%;
 }
+
+.button-type3.btn-disabled {
+	background-color: #aca0eb;
+}
+
+.button-type3.btn-active {
+	background-color: #7f6aee;
+}
