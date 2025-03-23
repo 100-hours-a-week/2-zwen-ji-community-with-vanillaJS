@@ -102,6 +102,13 @@ ellipse {
 	margin-top: 24px;
 	border-bottom: solid 1px #00000029;
 }
+.padding1 {
+	height: 16px;
+}
+.post-body img {
+	margin: 0 auto;
+}
+
 .post-body article {
 	font-family: Pretendard;
 	font-weight: 400;

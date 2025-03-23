@@ -1,5 +1,6 @@
 import { deletePost, fetchPost } from '../../api/post_api.js';
 import { formatDateTime } from '../../utils/date-utils.js';
+import { addAuthHeader, loadUserProfile } from '../../utils/login.js';
 import { ModalManager } from '../../utils/modal.js';
 import { formatNumber } from '../../utils/number_format.js';
 import { getCurrentUserId } from '../../utils/user.js';
@@ -9,6 +10,7 @@ import { initLikedMoudule } from './liked.js';
 const postTitle = document.getElementById('post-title');
 const postContent = document.getElementById('post-body');
 const postAuthor = document.getElementById('post-author');
+const postAuthorProfileImage = document.getElementById('post-author-profile');
 const postDate = document.getElementById('post-date');
 const postImage = document.getElementById('post-image');
 const likesCountField = document.getElementById('liked-info');
@@ -21,15 +23,19 @@ function renderPostData(data) {
     const { postId, title, content, imageUrl, authorUserId, authorNickname, authorProfileImageUrl, likesCount, viewsCount, commentsCount, createdAt, likedByCurrentUser, comments } = data;
     if (postTitle) postTitle.textContent = title;
     if (postContent) postContent.textContent = content;
+
     if (postAuthor) postAuthor.textContent = authorNickname;
+    if (postAuthorProfileImage) loadUserProfile(authorProfileImageUrl, postAuthorProfileImage);
+
+
     if (postDate) {
         const date = new Date(createdAt);
         postDate.textContent = formatDateTime(date);
     }
 
     if (postImage) {
-        if (image) {
-            postImage.src = URL.createObjectURL(image);
+        if (imageUrl) {
+            loadPostImage(imageUrl, postImage);
             postImage.style.display = 'block';
         } else {
             postImage.style.display = 'none';
@@ -68,7 +74,7 @@ export async function initPostModule(postId) {
         //     return null;
         // }
 
-        if (result.data.authorUserId == getCurrentUserId() || devTest) {
+        if (result.data.authorUserId == getCurrentUserId()) {
             document.querySelector(".button-group").setAttribute("style", "display:inline-block");
             document.getElementById('btn_post_edit').addEventListener('click', () => {
                 window.location.href = `./post_edit.html?id=${postId}`;
@@ -92,4 +98,33 @@ export async function initPostModule(postId) {
         return null;
     }
 
+}
+
+function loadPostImage(imageUrl, imageElement) {
+    if (!imageUrl || imageUrl === "default_image") {
+        // 이미지가 없거나 기본 이미지인 경우 기본 이미지 표시
+        imageElement.src = "/path/to/default/image.jpg";
+        return;
+    }
+
+    fetch(`http://localhost:8080${imageUrl}`, addAuthHeader())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Image loading failed');
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            const objectUrl = URL.createObjectURL(blob);
+            imageElement.src = objectUrl;
+            // 메모리 누수 방지를 위해 이미지 로드 후 URL 해제
+            imageElement.onload = () => {
+                URL.revokeObjectURL(objectUrl);
+            };
+        })
+        .catch(error => {
+            console.error('Error loading image:', error);
+            // 에러 발생 시 기본 이미지 표시
+            imageElement.src = "/path/to/default/image.jpg";
+        });
 }

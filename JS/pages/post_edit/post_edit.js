@@ -18,6 +18,8 @@ export async function initEditPage() {
         console.error('필요한 폼 요소를 찾을 수 없습니다.');
         return;
     }
+
+
     const postId = getPostIdFromUrl();
 
     if (postId) {

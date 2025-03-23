@@ -116,3 +116,37 @@ export async function deletePost(postId) {
     }
 }
 
+
+// POST Image
+export async function uploadPostImage(imageFile) {
+    try {
+        if (!imageFile) {
+            throw new Error("이미지 파일이 제공되지 않았습니다");
+        }
+
+        const formData = new FormData();
+        formData.append('image', imageFile);
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            },
+            body: formData
+        };
+
+        const response = await fetch(`${baseUrl}/posts/image`, options);
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || '이미지 업로드에 실패했습니다.');
+        }
+
+        const result = await response.json();
+        console.log("이미지 업로드 결과:", result);
+        return result.data.imageUrl;
+    } catch (error) {
+        console.error("이미지 업로드 오류:", error);
+        throw error;
+    }
+}

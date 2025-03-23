@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../CSS/global.css">
     <link rel="stylesheet" type="text/css" href="../CSS/edit_profile.css">
-    <script src="../JS/profile_dropdown.js"></script>
-    <script src="../mock/mock-api.js"></script>
-    <script src="../JS/user_module/edit_profile.js" type="module"></script>
     <title>회원정보 수정</title>
 </head>
 
@@ -23,10 +20,8 @@
             </svg>
         </button>
         <!-- 프로필 이미지 -->
-        <div class="user-profile" id="profileImage">
-            <svg>
-                <ellipse></ellipse>
-            </svg>
+        <div class="user-profile">
+            <img id="curr_user_profile_image">
         </div>
         <div class="profile-dropdown">
             <div class="dropdown-menu" id="dropdownMenu">
@@ -43,16 +38,18 @@
             <form id="edit-profile-form">
                 <div class="form-group">
                     <!-- form1 -->
-                    <div>
-                        <h1 class="input-title">프로필 사진</h1>
-                        <div class="svg-container">
+                    <h1 class="input-title">프로필 사진</h1>
+                    <div class="profile-image-field">
+                        <div class="profile-image-wrapper">
+                            <input id="input_file_upload" type="file" style="display: none" name="profileImage"
+                                accept="image/*">
                             <img id="profile_image" class="profile-image">
-                            <svg id="default_profile_container">
-                                <ellipse id="profile-space">
-                                </ellipse>
-                            </svg>
+                            <div class="image-overlay"></div>
+                            <div class="svg-container">변경</div>
                         </div>
+
                     </div>
+
                     <!-- form2 -->
                     <div class="input-container">
                         <h1 class="input-title">이메일*</h1>
@@ -64,9 +61,9 @@
                         <div class="input-field">
                             <input id="nickname" name="nickname" type="text" placeholder="닉네임을 입력하세요" autofocus>
                         </div>
-                        <p class="helper-text"></p>
+                        <p id="nickname_helpertext" class="helper-text"></p>
                     </div>
-                    <button id="submit-btn" class="button-type1">수정하기</button>
+                    <button id="submit-btn" class="button-type1 btn-disabled">수정하기</button>
                     <a id="drop-btn" class="button-type2">회원 탈퇴</a>
                 </div>
             </form>
@@ -84,6 +81,7 @@
             </div>
         </div>
     </div>
+    <script src="../JS/pages/profile_edit/profile_edit.js" type="module"></script>
 </body>
 
 </html>

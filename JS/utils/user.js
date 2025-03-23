@@ -16,3 +16,5 @@ export function updateUserInfo(updatedInfo) {
     localStorage.setItem('userInfo', JSON.stringify(newInfo));
     return newInfo;
 }
+
+

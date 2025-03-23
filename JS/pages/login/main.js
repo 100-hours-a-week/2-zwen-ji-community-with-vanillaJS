@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error("로그인 오류:", error.message);
             //로그인 실패 로직 
+            document.getElementById('help1').textContent = "*이메일과 비밀번호를 확인하세요."
         }
     });
 });

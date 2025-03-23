@@ -1,5 +1,6 @@
 import { fetchPostList } from "../../api/post_api.js";
 import { formatDateTime } from "../../utils/date-utils.js";
+import { loadUserProfile } from "../../utils/login.js";
 import { formatNumber } from "../../utils/number_format.js";
 import { InfiniteScroll } from "./infinite_scroll.js";
 
@@ -23,16 +24,17 @@ export function renderPostItems(container, postList) {
                 </div>
             </div>
             <div class="user-info">
-                <div class="svg-container">
-                    <svg>
-                        <ellipse></ellipse>
-                    </svg>
+            <div class="author-profile">
+                    <img>
                 </div>
                 <span class="user-nickname">${postInfo.authorNickname}</span>
             </div>
         </a>`;
 
         container.appendChild(postElement);
+
+        const profileUrl = `${postInfo.authorProfileImageUrl == "default_image" || postInfo.authorProfileImageUrl == null ? "/static.upload/profiles/default_profile.jpg" : postInfo.authorProfileImageUrl}`;
+        loadUserProfile(profileUrl, postElement.querySelector(".author-profile img"))
     });
 }
 

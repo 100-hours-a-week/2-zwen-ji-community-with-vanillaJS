@@ -21,7 +21,6 @@ export function createFormState(fields, helperTextElements, submitButton) {
             }
 
         },
-
         updateSubmitButton() {
             if (submitButton) {
                 if (this.isFormValid()) {
@@ -29,6 +28,7 @@ export function createFormState(fields, helperTextElements, submitButton) {
                     submitButton.classList.remove('btn-disabled');
                     submitButton.classList.add('btn-active');
                 } else {
+
                     submitButton.disabled = true;
                     submitButton.classList.remove('btn-active');
                     submitButton.classList.add('btn-disabled');

@@ -51,7 +51,7 @@ const PASSWORD_CONFIRM_STATES = {
     INVALID_PASSWORD_CONFIRM: { isValid: false, message: "비밀번호와 다릅니다." }
 }
 
-export const isValidPassword2 = (password, confirm) => {
+export const isValidConfirm = (password, confirm) => {
     if (confirm.length == 0) {
         return PASSWORD_CONFIRM_STATES.NO_VALUE;
     }

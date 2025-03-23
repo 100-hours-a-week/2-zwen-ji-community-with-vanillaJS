@@ -2,28 +2,6 @@
 	margin-top: 161px;
 }
 
-/* temp-dummy =============================================*/
-header .svg-container {
-	position: relative;
-	display: inline-block;
-	width: 36px;
-	height: 36px;
-	vertical-align: middle;
-}
-
-svg {
-	width: 36px;
-	height: 36px;
-}
-ellipse {
-	cx: 18;
-	cy: 18;
-	rx: 18;
-	ry: 18;
-	fill: #d9d9d9;
-}
-/*=====================================================*/
-
 .form-group {
 	/* todo */
 	margin-top: 27px;
@@ -33,30 +11,18 @@ ellipse {
 	/* todo */
 	margin-bottom: 10px;
 }
-.form-group .svg-container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-}
-.form-group svg {
-	width: 149px;
-	height: 149px;
-}
 
-.form-group ellipse#profile-space {
-	cx: 74.5;
-	cy: 74.5;
-	rx: 74.5;
-	ry: 74.5;
-	fill: #c4c4c4;
+.profile-image-field {
+	position: relative;
 }
-
 .profile-image {
+	position: relative;
+
 	width: 149px;
 	height: 149px;
 	object-fit: cover;
 	border-radius: 50%;
+	opacity: 0.8;
 }
 
 .email-info {
@@ -68,4 +34,47 @@ ellipse {
 	letter-spacing: 0%;
 	color: #000000;
 	padding: 16px 24px;
+}
+
+#profileImageInput {
+	display: none;
+}
+
+.profile-image-wrapper {
+	position: relative;
+	margin: 0 auto;
+	width: 149px;
+	height: 149px;
+	border-radius: 50%;
+	overflow: hidden;
+	justify-content: center;
+	align-items: center;
+}
+
+.svg-container {
+	width: 60px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -30px;
+	margin-top: -20px;
+	z-index: 2;
+	color: white;
+	border: solid 2px white;
+	padding: 4px 12px;
+	background-color: transparent;
+	border-radius: 20px;
+	font-weight: 700;
+	font-size: 15px;
+	cursor: pointer;
+}
+
+.image-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	pointer-events: none;
 }

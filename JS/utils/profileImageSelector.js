@@ -1,4 +1,4 @@
-import { isValidProfileImage } from "../../utils/validator.js";
+import { isValidProfileImage } from "./validator.js";
 
 // 선택된 파일을 저장할 변수 추가
 let selectedProfileImageFile = null;
@@ -21,21 +21,23 @@ export function initProfileImageSelecter(formState) {
     });
 
     // 폼 상태 초기화
-    formState.updateFormState("profile", {
-        isValid: false,
-        message: "*프로필 사진을 업로드 해주세요."
-    });
+    if (formState) {
+        formState.updateFormState("profile", {
+            isValid: false,
+            message: "*프로필 사진을 업로드 해주세요."
+        });
+    }
 
-    // 파일 선택 이벤트 리스너
+
+
     profileImageInput.addEventListener('change', (event) => {
         console.log("파일 선택 이벤트 발생");
 
-        // 파일이 선택되었는지 확인
+
         if (event.target.files && event.target.files.length > 0) {
             const file = event.target.files[0];
             console.log("선택된 파일:", file.name, file.type, file.size);
 
-            // 유효성 검사
             const validationResult = isValidProfileImage(file);
 
             if (validationResult.isValid) {
@@ -57,7 +59,10 @@ export function initProfileImageSelecter(formState) {
             }
 
             // 폼 상태 업데이트
-            formState.updateFormState("profile", validationResult);
+            if (formState) {
+                formState.updateFormState("profile", validationResult);
+            }
+
         } else {
             console.log("파일이 선택되지 않음");
         }

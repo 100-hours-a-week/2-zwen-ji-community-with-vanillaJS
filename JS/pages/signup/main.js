@@ -1,6 +1,6 @@
 import { createFormState } from "../../utils/formState.js";
-import { isValidEmail, isValidNickname, isValidPassword, isValidPassword2 } from "../../utils/validator.js";
-import { getProfileImageFile, initProfileImageSelecter } from "./profileImageSelector.js";
+import { getProfileImageFile, initProfileImageSelecter } from "../../utils/profileImageSelector.js";
+import { isValidConfirm, isValidEmail, isValidNickname, isValidPassword } from "../../utils/validator.js";
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     password_confirm_field.addEventListener("input", () => {
-        formState.updateFormState("confirm", isValidPassword2(password_field.value, password_confirm_field.value));
+        formState.updateFormState("confirm", isValidConfirm(password_field.value, password_confirm_field.value));
     });
 
     nickname_field.addEventListener("input", () => {
@@ -42,26 +42,18 @@ document.addEventListener('DOMContentLoaded', () => {
     initProfileImageSelecter(formState);
 
 
-    // 필요한 함수 import
 
-
-    // ... 기존 코드 ...
-
-    // Submit 이벤트 핸들러
     submitButton.addEventListener("click", async () => {
         console.log("회원가입 버튼 클릭됨");
 
         try {
-            // 폼 유효성 검사
             if (!formState.isFormValid()) {
                 console.warn("폼이 유효하지 않음, 제출 중단");
                 return;
             }
 
-            // FormData 객체 생성
             const formData = new FormData();
 
-            // 사용자 데이터 추가
             const userData = {
                 email: email_field.value,
                 password: password_field.value,
@@ -69,12 +61,10 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             console.log("사용자 데이터:", userData);
 
-            // userData를 JSON Blob으로 변환하여 추가
             formData.append('userData', new Blob([JSON.stringify(userData)], {
                 type: 'application/json'
             }));
 
-            // 프로필 이미지 파일 가져오기
             const profileFile = getProfileImageFile();
             console.log("가져온 프로필 이미지 파일:", profileFile);
 
@@ -104,11 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             console.log("서버 응답 상태:", response.status);
 
-            // 응답 텍스트 확인
             const responseText = await response.text();
             console.log("서버 응답 텍스트:", responseText);
 
-            // JSON 파싱
             let data = null;
             if (responseText && responseText.trim()) {
                 try {
@@ -119,7 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // 응답 처리
             if (response.ok) {
                 console.log("회원가입 성공!");
                 alert("회원가입이 성공적으로 완료되었습니다!");

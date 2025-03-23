@@ -19,15 +19,32 @@ function isTokenValid() {
     }
 }
 
-async function loadUserProfile() {
+export function loadUserProfile(profileImageUrl, profileElement) {
+
+    fetch(`http://localhost:8080${profileImageUrl}`, addAuthHeader())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Image loading failed');
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            const imageUrl = URL.createObjectURL(blob);
+            profileElement.src = imageUrl;
+        })
+        .catch(error => {
+            console.error('Error loading image:', error);
+        });
+
+}
+async function loadCurrUserProfile() {
     try {
-        const userId = localStorage.getItem("userId");
-        const profileImageUrl = localStorage.getItem("profileImageUrl");
+        const profileImageUrl = localStorage.getItem("profileImageUrl") || "default_profile.jpg";
 
         // 프로필 이미지 표시
         const profileElement = document.getElementById('curr_user_profile_image');
         if (profileElement) {
-            profileElement.src = `http://localhost:8080/${profileImageUrl}` || null;
+            loadUserProfile(profileImageUrl, profileElement);
         }
         setDropDown();
         console.log("프로필 드롭다운 초기화 완료");
@@ -80,7 +97,7 @@ export async function manageLoginStatus() {
         return;
     }
 
-    await loadUserProfile();
+    await loadCurrUserProfile();
 }
 
 export function handleLoginSuccess(response) {
