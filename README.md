@@ -5,7 +5,8 @@
 ## 프로젝트 설명 
 게시글, 댓글, 좋아요 기능을 포함하는  간단한 온라인 커뮤니티 제작.
 
-PL : HTML + CSS + JavaScript 
+PL : HTML + CSS + JavaScript
+
 Tools : Postman, VSCode, Chrome 
 
 ## 프로젝트 구조 (FE)
