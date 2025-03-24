@@ -8,6 +8,7 @@
 
 ## 프로젝트 구조
 
+```
 Project
 ├── HTML
 │   ├── login.html
@@ -63,6 +64,6 @@ Project
         ├── toast.js
         ├── user.js
         └── validator.js
-
+```
 
 ##
